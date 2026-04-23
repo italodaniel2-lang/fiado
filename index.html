@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiado Bank</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#d9d9d9;
+display:flex;
+justify-content:center;
+padding:20px;
+transition: background 0.3s;
+}
+
+.phone{
+width:414px;
+height:896px;
+background:#f5f7fb;
+border-radius:45px;
+overflow:hidden;
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+display:flex;
+flex-direction:column;
+position:relative;
+transition: background 0.3s;
+}
+
+header{
+background:linear-gradient(135deg, #FFD700, #DAA520);
+color:#1a1a1a;
+padding:25px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.dashboard{
+margin:15px;
+background:white;
+border-radius:22px;
+padding:18px;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.dashboard small{
+color:#666;
+}
+
+.dashboard h1{
+font-size:34px;
+margin-top:8px;
+color:#000000;
+}
+
+.bank-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
+}
+
+.bank-btn{
+padding:12px;
+border:none;
+border-radius:16px;
+font-weight:bold;
+cursor:pointer;
+background:#FFD700;
+color:white;
+transition: all 0.3s;
+}
+
+.bank-btn:hover {
+background:#DAA520;
+transform: translateY(-2px);
+}
+
+.search{
+margin:0 15px;
+background:white;
+padding:12px 15px;
+border-radius:16px;
+display:flex;
+gap:10px;
+align-items:center;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.search input{
+border:none;
+outline:none;
+width:100%;
+font-size:16px;
+background: transparent;
+}
+
+.list{
+padding:15px;
+overflow:auto;
+flex:1;
+}
+
+.client{
+background:white;
+padding:15px;
+border-radius:18px;
+margin-bottom:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.client h3{
+margin-bottom:6px;
+}
+
+.client p{
+color:#666;
+margin-bottom:10px;
+font-size:16px;
+font-weight:bold;
+}
+
+.actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-top:10px;
+}
+
+button{
+border:none;
+padding:10px;
+border-radius:12px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+transition: all 0.3s;
+}
+
+.primary{
+background: linear-gradient(135deg, #FFD700, #DAA520);
+color:#1a1a1a;
+}
+
+.primary:hover {
+transform: translateY(-2px);
+}
+
+.green{
+background:#00b96d;
+color:white;
+}
+
+.green:hover {
+transform: translateY(-2px);
+}
+
+.red{
+background:#ff3d3d;
+color:white;
+}
+
+.red:hover {
+transform: translateY(-2px);
+}
+
+.pix-btn{
+background: linear-gradient(135deg, #32BCAD, #1E9B8C);
+color:white;
+}
+
+.pix-btn:hover {
+transform: translateY(-2px);
+}
+
+.settings{
+position:absolute;
+top:80px;
+right:15px;
+width:280px;
+background:white;
+padding:15px;
+border-radius:18px;
+display:none;
+z-index:10;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.settings label{
+display:block;
+font-size:13px;
+margin-top:10px;
+color: #333;
+font-weight: bold;
+}
+
+.settings input, .settings select{
+width:100%;
+margin-top:5px;
+padding:8px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:13px;
+}
+
+.settings small{
+font-size: 11px;
+display: block;
+margin-top: 5px;
+color: #666;
+}
+
+.settings .preview-imagem {
+margin-top: 10px;
+text-align: center;
+}
+
+.settings .preview-imagem img {
+max-width: 100%;
+max-height: 100px;
+border-radius: 8px;
+margin-top: 5px;
+}
+
+.modal{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index: 20;
+}
+
+.modal-box{
+background:white;
+width:100%;
+max-height:80%;
+overflow:auto;
+border-radius:20px;
+padding:20px;
+}
+
+.imagem-container {
+text-align: center;
+padding: 20px;
+}
+
+.imagem-container img {
+max-width: 100%;
+border-radius: 10px;
+}
+
+.pix-modal-info {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.pix-modal-info p {
+margin: 10px 0;
+font-size: 14px;
+}
+
+.pix-chave {
+background: #f0f0f0;
+padding: 10px;
+border-radius: 10px;
+margin: 15px 0;
+word-break: break-all;
+font-size: 12px;
+}
+
+.pix-imagem {
+margin: 15px 0;
+text-align: center;
+}
+
+.pix-imagem img {
+max-width: 200px;
+max-height: 150px;
+border-radius: 10px;
+object-fit: contain;
+}
+
+.estrato-mes {
+margin-bottom: 20px;
+border: 1px solid #ddd;
+border-radius: 10px;
+overflow: hidden;
+}
+
+.estrato-mes h3 {
+background: #FFD700;
+color: #1a1a1a;
+padding: 10px;
+margin: 0;
+font-size: 16px;
+}
+
+.estrato-item {
+padding: 8px 12px;
+border-bottom: 1px solid #eee;
+font-size: 13px;
+}
+
+.estrato-data {
+color: #666;
+font-size: 11px;
+margin-top: 5px;
+}
+
+/* Tema escuro */
+body.dark-mode {
+background: #1a1a1a;
+}
+
+body.dark-mode .phone {
+background: #2c2c2c;
+}
+
+body.dark-mode header {
+background: linear-gradient(135deg, #B8860B, #8B6914);
+color: #f0f0f0;
+}
+
+body.dark-mode .dashboard,
+body.dark-mode .client,
+body.dark-mode .search,
+body.dark-mode .settings,
+body.dark-mode .modal-box {
+background: #3a3a3a;
+color: #e0e0e0;
+}
+
+body.dark-mode .dashboard h1 {
+color: #ffffff !important;
+}
+
+body.dark-mode .dashboard small,
+body.dark-mode .client p {
+color: #b0b0b0;
+}
+
+body.dark-mode .search input {
+color: #e0e0e0;
+}
+
+body.dark-mode .settings label {
+color: #e0e0e0;
+}
+
+body.dark-mode .settings input,
+body.dark-mode .settings select {
+background: #4a4a4a;
+color: #e0e0e0;
+border-color: #555;
+}
+
+body.dark-mode .bank-btn {
+background: #B8860B;
+color: white;
+}
+
+body.dark-mode .estrato-mes {
+border-color: #555;
+}
+
+body.dark-mode .estrato-mes h3 {
+background: #B8860B;
+color: #f0f0f0;
+}
+
+body.dark-mode .estrato-item {
+border-bottom-color: #555;
+}
+
+body.dark-mode .estrato-data {
+color: #aaa;
+}
+
+body.dark-mode .pix-chave {
+background: #4a4a4a;
+color: #e0e0e0;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+<header>
+Fiado Bank
+<span onclick="toggleSettings()" style="cursor:pointer;">⚙️</span>
+</header>
+
+<div class="dashboard">
+<small>Total em dívidas pendentes</small>
+<h1 id="total">R$ 0,00</h1>
+
+<div class="bank-actions">
+<button class="bank-btn" onclick="novoCliente()">➕ Adicionar Cliente</button>
+<button class="bank-btn" onclick="mostrarEstrato()">📊 Ver Estrato</button>
+</div>
+</div>
+
+<div class="search">
+🔍
+<input type="text" id="searchInput" placeholder="Buscar cliente..." onkeyup="buscar(this.value)">
+</div>
+
+<div class="list" id="lista"></div>
+
+<div class="settings" id="settings">
+<label>Tamanho da letra</label>
+<input type="range" min="12" max="24" value="16" onchange="mudarTamanhoLetra(this.value)">
+
+<label>🔑 Configuração da Chave PIX</label>
+<select id="tipoChave" onchange="salvarChavePix()">
+<option value="CPF">CPF</option>
+<option value="CNPJ">CNPJ</option>
+<option value="Email">E-mail</option>
+<option value="Telefone">Telefone</option>
+<option value="Aleatoria">Chave Aleatória</option>
+</select>
+<input type="text" id="chavePixPadrao" placeholder="Digite a chave PIX" onchange="salvarChavePix()">
+<small>Esta chave será usada para receber pagamentos via PIX</small>
+
+<label>🖼️ Logo / Imagem da Empresa</label>
+<input type="file" id="uploadImagem" accept="image/*" onchange="uploadImagemPerfil(this)">
+<div class="preview-imagem" id="previewImagem"></div>
+<small>Imagem que aparecerá SOMENTE ao clicar em "Pagar com PIX"</small>
+
+<label>
+<input type="checkbox" id="temaCheckbox" onchange="alternarTema(this.checked)">
+<span id="temaTexto">Modo escuro</span>
+</label>
+</div>
+
+<div class="modal" id="pixModal">
+<div class="modal-box">
+<h2>💳 Pagamento via PIX</h2>
+<div id="pixContent"></div>
+<br>
+<button class="primary" onclick="fecharPixModal()">Fechar</button>
+</div>
+</div>
+
+<div class="modal" id="estratoModal">
+<div class="modal-box">
+<h2>📊 Estrato Geral</h2>
+<div id="estratoContent"></div>
+<br>
+<button class="primary" onclick="fecharEstratoModal()">Fechar</button>
+</div>
+</div>
+
+</div>
+
+<script>
+let clientes = JSON.parse(localStorage.getItem("fiado")) || [];
+let chavePix = localStorage.getItem("chavePix") || "";
+let tipoChave = localStorage.getItem("tipoChave") || "CPF";
+let imagemPerfil = localStorage.getItem("imagemPerfil") || "";
+
+function salvarChavePix() {
+chavePix = document.getElementById("chavePixPadrao").value;
+tipoChave = document.getElementById("tipoChave").value;
+localStorage.setItem("chavePix", chavePix);
+localStorage.setItem("tipoChave", tipoChave);
+alert("Chave PIX salva!");
+}
+
+function carregarChavePix() {
+document.getElementById("chavePixPadrao").value = chavePix;
+document.getElementById("tipoChave").value = tipoChave;
+}
+
+function uploadImagemPerfil(input) {
+const file = input.files[0];
+if(file) {
+const reader = new FileReader();
+reader.onload = function(event) {
+imagemPerfil = event.target.result;
+localStorage.setItem("imagemPerfil", imagemPerfil);
+mostrarPreviewImagem();
+alert("Imagem salva com sucesso!");
+};
+reader.readAsDataURL(file);
+}
+}
+
+function mostrarPreviewImagem() {
+const preview = document.getElementById("previewImagem");
+if(imagemPerfil) {
+preview.innerHTML = `<img src="${imagemPerfil}" alt="Preview">`;
+} else {
+preview.innerHTML = "";
+}
+}
+
+function mostrarPixModal(clienteNome, valorDivida) {
+if(!chavePix) {
+alert("Por favor, cadastre uma chave PIX nas configurações!");
+toggleSettings();
+return;
+}
+
+const modal = document.getElementById("pixModal");
+const pixContent = document.getElementById("pixContent");
+
+const tipoIcone = {
+"CPF": "🆔", "CNPJ": "🏢", "Email": "📧", "Telefone": "📱", "Aleatoria": "🔑"
+};
+
+let imagemHtml = "";
+if(imagemPerfil) {
+imagemHtml = `
+<div class="pix-imagem">
+<img src="${imagemPerfil}" alt="Logo da Empresa">
+</div>
+`;
+}
+
+pixContent.innerHTML = `
+<div class="pix-modal-info">
+${imagemHtml}
+<p><strong>💰 Cliente:</strong> ${clienteNome}</p>
+<p><strong>💵 Valor a pagar:</strong> R$ ${formatarMoeda(valorDivida)}</p>
+<div class="pix-chave">
+${tipoIcone[tipoChave] || "🔑"} <strong>${tipoChave}:</strong><br>
+${chavePix}
+</div>
+<p style="font-size: 12px; color: #666; margin-top: 15px;">
+📱 Instruções:<br>
+1. Abra o app do seu banco<br>
+2. Escolha "Pagar com PIX"<br>
+3. Copie a chave acima ou digite manualmente<br>
+4. Confirme o pagamento de R$ ${formatarMoeda(valorDivida)}
+</p>
+</div>
+`;
+
+modal.style.display = "flex";
+}
+
+function fecharPixModal() {
+document.getElementById("pixModal").style.display = "none";
+}
+
+function salvar(){
+localStorage.setItem("fiado", JSON.stringify(clientes));
+}
+
+function formatarMoeda(valor) {
+return valor.toFixed(2).replace('.', ',');
+}
+
+function mostrarEstrato() {
+if(clientes.length === 0) {
+document.getElementById("estratoContent").innerHTML = "<p>Nenhum cliente cadastrado</p>";
+document.getElementById("estratoModal").style.display = "flex";
+return;
+}
+
+let html = "";
+clientes.forEach(cliente => {
+if(cliente.historico && cliente.historico.length > 0) {
+html += `<div class="estrato-mes"><h3>${cliente.nome}</h3>`;
+cliente.historico.forEach(item => {
+html += `<div class="estrato-item">${item}</div>`;
+});
+html += `</div>`;
+}
+});
+
+if(html === "") html = "<p>Nenhum movimento registrado</p>";
+document.getElementById("estratoContent").innerHTML = html;
+document.getElementById("estratoModal").style.display = "flex";
+}
+
+function fecharEstratoModal() {
+document.getElementById("estratoModal").style.display = "none";
+}
+
+function render(lista = clientes){
+let html = "";
+
+lista.forEach((c, idx)=>{
+const originalIndex = clientes.findIndex(cliente => cliente.id === c.id);
+html += `
+<div class="client">
+<h3>${c.nome}</h3>
+<p>💰 Dívida atual: R$ ${formatarMoeda(c.divida)}</p>
+<div class="actions">
+<button class="green" onclick="pagar(${originalIndex})">💰 Pagamento</button>
+<button class="red" onclick="quitar(${originalIndex})">✅ Quitar</button>
+<button class="primary" onclick="aumentar(${originalIndex})">📈 Aumentar</button>
+<button class="pix-btn" onclick="mostrarPixModal('${c.nome}', ${c.divida})">💳 Pagar com PIX</button>
+</div>
+</div>
+`;
+});
+
+document.getElementById("lista").innerHTML = html;
+let total = clientes.reduce((a,b)=>a + b.divida,0);
+document.getElementById("total").innerText = "R$ " + formatarMoeda(total);
+salvar();
+}
+
+function gerarId() {
+return Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+}
+
+function novoCliente(){
+let nome = prompt("Nome do cliente:");
+if(!nome) return;
+
+let valor = parseFloat(prompt("Valor inicial da dívida:"));
+if(isNaN(valor) || valor <= 0) {
+alert("Valor inválido!");
+return;
+}
+
+clientes.push({
+id: gerarId(),
+nome: nome,
+divida: valor,
+historico: [new Date().toLocaleString() + " - Cliente criado com dívida de R$" + formatarMoeda(valor)]
+});
+render();
+}
+
+function pagar(idx){
+if(idx === -1) return;
+let valor = parseFloat(prompt("Valor do pagamento:"));
+if(isNaN(valor) || valor <= 0) return;
+if(valor > clientes[idx].divida) {
+alert("Valor maior que a dívida!");
+return;
+}
+
+clientes[idx].divida -= valor;
+clientes[idx].historico.push(new Date().toLocaleString() + " - Pagamento de R$" + formatarMoeda(valor));
+
+if(clientes[idx].divida <= 0.01) {
+clientes.splice(idx,1);
+alert("Dívida quitada!");
+}
+render();
+}
+
+function quitar(idx){
+if(idx === -1) return;
+let valor = clientes[idx].divida;
+clientes[idx].historico.push(new Date().toLocaleString() + " - Dívida quitada (R$" + formatarMoeda(valor) + ")");
+clientes.splice(idx,1);
+alert("Dívida quitada!");
+render();
+}
+
+function aumentar(idx){
+if(idx === -1) return;
+let valor = parseFloat(prompt("Valor para adicionar à dívida:"));
+if(isNaN(valor) || valor <= 0) return;
+
+clientes[idx].divida += valor;
+clientes[idx].historico.push(new Date().toLocaleString() + " - Acréscimo de R$" + formatarMoeda(valor));
+render();
+}
+
+function buscar(txt){
+txt = txt.toLowerCase();
+if(txt === "") render(clientes);
+else render(clientes.filter(c => c.nome.toLowerCase().includes(txt)));
+}
+
+function toggleSettings(){
+let s = document.getElementById("settings");
+s.style.display = s.style.display === "block" ? "none" : "block";
+if(s.style.display === "block") {
+carregarChavePix();
+mostrarPreviewImagem();
+}
+}
+
+function mudarTamanhoLetra(tamanho){
+document.querySelector(".phone").style.fontSize = tamanho + "px";
+localStorage.setItem("tamanhoLetra", tamanho);
+}
+
+function alternarTema(ativar){
+if(ativar){
+document.body.classList.add("dark-mode");
+localStorage.setItem("temaEscuro", "true");
+document.getElementById("temaTexto").textContent = "Modo claro";
+} else {
+document.body.classList.remove("dark-mode");
+localStorage.setItem("temaEscuro", "false");
+document.getElementById("temaTexto").textContent = "Modo escuro";
+}
+}
+
+function carregarPreferencias() {
+let tamanho = localStorage.getItem("tamanhoLetra");
+if(tamanho) {
+document.querySelector(".phone").style.fontSize = tamanho + "px";
+document.querySelector(".settings input[type='range']").value = tamanho;
+}
+
+let tema = localStorage.getItem("temaEscuro");
+if(tema === "true") {
+document.getElementById("temaCheckbox").checked = true;
+document.body.classList.add("dark-mode");
+document.getElementById("temaTexto").textContent = "Modo claro";
+}
+
+carregarChavePix();
+mostrarPreviewImagem();
+}
+
+document.getElementById("pixModal").addEventListener("click", function(e) {
+if(e.target === this) fecharPixModal();
+});
+
+document.getElementById("estratoModal").addEventListener("click", function(e) {
+if(e.target === this) fecharEstratoModal();
+});
+
+document.addEventListener("click", function(e) {
+const settings = document.getElementById("settings");
+const btn = e.target.closest('[onclick="toggleSettings()"]');
+if(settings && settings.style.display === "block" && !settings.contains(e.target) && !btn) {
+settings.style.display = "none";
+}
+});
+
+carregarPreferencias();
+render();
+</script>
+
+</body>
+</html>
